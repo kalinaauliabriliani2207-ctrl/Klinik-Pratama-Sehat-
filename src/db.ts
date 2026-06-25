@@ -534,6 +534,7 @@ export const ClinicalDB = {
     if (isSupabaseConfigured && supabase) {
       const { data, error } = await supabase.from('jadwal_dokter').insert([jadwal]).select().single();
       if (!error && data) return data as JadwalDokter;
+      console.error('Error addJadwalDokter:', error);
     }
 
     const list = getLocalStorageItem<JadwalDokter>('klinik_jadwal', SEED_JADWAL);
@@ -591,6 +592,7 @@ export const ClinicalDB = {
     if (isSupabaseConfigured && supabase) {
       const { data, error } = await supabase.from('kunjungan').insert([kunjungan]).select().single();
       if (!error && data) return data as Kunjungan;
+      console.error('Error addKunjungan:', error);
     }
 
     const list = getLocalStorageItem<Kunjungan>('klinik_kunjungan', SEED_KUNJUNGAN);

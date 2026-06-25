@@ -1,0 +1,6 @@
+{
+  "name": "Sistem Manajemen Klinik",
+  "description": "Aplikasi manajemen data pasien, dokter, poli, jadwal praktik, registrasi kunjungan, dan rekam medis terintegrasi dengan database Supabase.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

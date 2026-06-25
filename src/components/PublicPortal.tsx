@@ -31,6 +31,9 @@ import {
   Kunjungan 
 } from '../types';
 
+import femaleDoctorHero from '../assets/images/female_doctor_hero_1780543220891.png';
+import clinicAboutUs from '../assets/images/clinic_about_us_1780543237795.png';
+
 interface PublicPortalProps {
   pasienList: Pasien[];
   dokterList: Dokter[];
@@ -137,8 +140,8 @@ export default function PublicPortal({
 
   // Find dynamic doctor profile illustration/avatar
   const doctorImages = [
-    '/src/assets/images/female_doctor_hero_1780543220891.png',
-    '/src/assets/images/clinic_about_us_1780543237795.png'
+    femaleDoctorHero,
+    clinicAboutUs
   ];
 
   return (
@@ -214,7 +217,7 @@ export default function PublicPortal({
               {/* Main doctor crop container */}
               <div className="relative w-[340px] md:w-[380px] h-[340px] md:h-[380px] bg-gradient-to-b from-blue-100 to-indigo-50 rounded-full overflow-hidden border-4 border-white shadow-xl">
                 <img 
-                  src="/src/assets/images/female_doctor_hero_1780543220891.png"
+                  src={femaleDoctorHero}
                   alt="Doctor Hero"
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover object-top scale-102 transform transition duration-1000 hover:scale-[1.05]"
@@ -224,7 +227,7 @@ export default function PublicPortal({
               {/* Floating element 1: Doctor Credentials Badge */}
               <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 w-72 bg-white/90 backdrop-blur-md rounded-2xl p-4 shadow-xl border border-slate-100 flex items-center gap-3">
                 <img 
-                  src="/src/assets/images/female_doctor_hero_1780543220891.png" 
+                  src={femaleDoctorHero} 
                   alt="Dr Emily" 
                   referrerPolicy="no-referrer"
                   className="h-10 w-10 rounded-full object-cover border border-blue-100 shadow" 
@@ -252,7 +255,7 @@ export default function PublicPortal({
           <div className="lg:col-span-5 relative flex justify-center">
             <div className="relative w-full max-w-sm rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-slate-50">
               <img 
-                src="/src/assets/images/clinic_about_us_1780543237795.png" 
+                src={clinicAboutUs} 
                 alt="About us clinic"
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover object-center max-h-[460px]"

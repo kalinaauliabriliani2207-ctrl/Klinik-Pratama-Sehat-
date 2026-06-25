@@ -317,11 +317,26 @@ export const ClinicalDB = {
   },
 
   async addPasien(pasien: Omit<Pasien, 'id_pasien'>): Promise<Pasien> {
-    const id = isSupabaseConfigured ? undefined : `p-${Date.now()}`;
+    let id = `p-${Date.now()}`;
+    if (isSupabaseConfigured && supabase) {
+      try {
+        const { data: list } = await supabase.from('pasien').select('id_pasien');
+        let nextNum = 1;
+        if (list && list.length > 0) {
+          const nums = list
+            .map(p => parseInt(p.id_pasien?.replace(/[^\d]/g, '') || '0'))
+            .filter(n => !isNaN(n));
+          if (nums.length > 0) nextNum = Math.max(...nums) + 1;
+        }
+        id = `P${String(nextNum).padStart(3, '0')}`;
+      } catch (e) {
+        console.error('Error generating pasien ID:', e);
+      }
+    }
     const newPasien = { ...pasien, id_pasien: id } as Pasien;
 
     if (isSupabaseConfigured && supabase) {
-      const { data, error } = await supabase.from('pasien').insert([pasien]).select().single();
+      const { data, error } = await supabase.from('pasien').insert([newPasien]).select().single();
       if (!error && data) return data as Pasien;
       console.error('Supabase error:', error);
     }
@@ -385,11 +400,26 @@ export const ClinicalDB = {
   },
 
   async addDokter(dokter: Omit<Dokter, 'id_dokter'>): Promise<Dokter> {
-    const id = isSupabaseConfigured ? undefined : `d-${Date.now()}`;
+    let id = `d-${Date.now()}`;
+    if (isSupabaseConfigured && supabase) {
+      try {
+        const { data: list } = await supabase.from('dokter').select('id_dokter');
+        let nextNum = 1;
+        if (list && list.length > 0) {
+          const nums = list
+            .map(d => parseInt(d.id_dokter?.replace(/[^\d]/g, '') || '0'))
+            .filter(n => !isNaN(n));
+          if (nums.length > 0) nextNum = Math.max(...nums) + 1;
+        }
+        id = `D${String(nextNum).padStart(3, '0')}`;
+      } catch (e) {
+        console.error('Error generating dokter ID:', e);
+      }
+    }
     const newDokter = { ...dokter, id_dokter: id } as Dokter;
 
     if (isSupabaseConfigured && supabase) {
-      const { data, error } = await supabase.from('dokter').insert([dokter]).select().single();
+      const { data, error } = await supabase.from('dokter').insert([newDokter]).select().single();
       if (!error && data) return data as Dokter;
     }
 
@@ -787,12 +817,27 @@ export const ClinicalDB = {
   },
 
   async addObat(obat: Omit<Obat, 'id_obat'>): Promise<Obat> {
-    const id = isSupabaseConfigured ? undefined : `ob-${Date.now()}`;
+    let id = `ob-${Date.now()}`;
+    if (isSupabaseConfigured && supabase) {
+      try {
+        const { data: list } = await supabase.from('obat').select('id_obat');
+        let nextNum = 1;
+        if (list && list.length > 0) {
+          const nums = list
+            .map(o => parseInt(o.id_obat?.replace(/[^\d]/g, '') || '0'))
+            .filter(n => !isNaN(n));
+          if (nums.length > 0) nextNum = Math.max(...nums) + 1;
+        }
+        id = `O${String(nextNum).padStart(3, '0')}`;
+      } catch (e) {
+        console.error('Error generating obat ID:', e);
+      }
+    }
     const newObat = { ...obat, id_obat: id } as Obat;
 
     if (isSupabaseConfigured && supabase) {
       try {
-        const { data, error } = await supabase.from('obat').insert([obat]).select().single();
+        const { data, error } = await supabase.from('obat').insert([newObat]).select().single();
         if (!error && data) return data as Obat;
       } catch (e) { console.error(e); }
     }
@@ -842,12 +887,27 @@ export const ClinicalDB = {
   },
 
   async addTindakan(tindakan: Omit<Tindakan, 'id_tindakan'>): Promise<Tindakan> {
-    const id = isSupabaseConfigured ? undefined : `tin-${Date.now()}`;
+    let id = `tin-${Date.now()}`;
+    if (isSupabaseConfigured && supabase) {
+      try {
+        const { data: list } = await supabase.from('tindakan').select('id_tindakan');
+        let nextNum = 1;
+        if (list && list.length > 0) {
+          const nums = list
+            .map(t => parseInt(t.id_tindakan?.replace(/[^\d]/g, '') || '0'))
+            .filter(n => !isNaN(n));
+          if (nums.length > 0) nextNum = Math.max(...nums) + 1;
+        }
+        id = `T${String(nextNum).padStart(3, '0')}`;
+      } catch (e) {
+        console.error('Error generating tindakan ID:', e);
+      }
+    }
     const newTindakan = { ...tindakan, id_tindakan: id } as Tindakan;
 
     if (isSupabaseConfigured && supabase) {
       try {
-        const { data, error } = await supabase.from('tindakan').insert([tindakan]).select().single();
+        const { data, error } = await supabase.from('tindakan').insert([newTindakan]).select().single();
         if (!error && data) return data as Tindakan;
       } catch (e) { console.error(e); }
     }

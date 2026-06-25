@@ -28,7 +28,7 @@ export const SUPABASE_SQL_SCHEMA = `-- =========================================
 
 -- 1. Tabel Pasien
 CREATE TABLE IF NOT EXISTS pasien (
-    id_pasien UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id_pasien VARCHAR(255) PRIMARY KEY,
     nama VARCHAR(255) NOT NULL,
     jenis_kelamin VARCHAR(50) CHECK (jenis_kelamin IN ('Laki-laki', 'Perempuan')) NOT NULL,
     tgl_lahir DATE NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS pasien (
 
 -- 2. Tabel Dokter
 CREATE TABLE IF NOT EXISTS dokter (
-    id_dokter UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id_dokter VARCHAR(255) PRIMARY KEY,
     nama_dokter VARCHAR(255) NOT NULL,
     spesialis VARCHAR(255) NOT NULL,
     no_hp VARCHAR(50) NOT NULL,
@@ -56,9 +56,9 @@ CREATE TABLE IF NOT EXISTS poli (
 -- 4. Tabel Jadwal Dokter (Relasi M:N Dokter & Poli)
 CREATE TABLE IF NOT EXISTS jadwal_dokter (
     id_jadwal UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    id_dokter UUID REFERENCES dokter(id_dokter) ON DELETE CASCADE NOT NULL,
+    id_dokter VARCHAR(255) REFERENCES dokter(id_dokter) ON DELETE CASCADE NOT NULL,
     id_poli UUID REFERENCES poli(id_poli) ON DELETE CASCADE NOT NULL,
-    hari VARCHAR(20) NOT NULL,
+    hari VARCHAR(50) NOT NULL,
     jam_mulai TIME NOT NULL,
     jam_selesai TIME NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS jadwal_dokter (
 -- 5. Tabel Kunjungan / Registrasi Pasien (Daftar Berobat)
 CREATE TABLE IF NOT EXISTS kunjungan (
     id_kunjungan UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    id_pasien UUID REFERENCES pasien(id_pasien) ON DELETE CASCADE NOT NULL,
+    id_pasien VARCHAR(255) REFERENCES pasien(id_pasien) ON DELETE CASCADE NOT NULL,
     id_jadwal UUID REFERENCES jadwal_dokter(id_jadwal) ON DELETE CASCADE NOT NULL,
     tanggal_kunjungan DATE NOT NULL DEFAULT CURRENT_DATE,
     keluhan TEXT NOT NULL,
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS kunjungan (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
--- 6. Tabel Rekam Medis (Relasi 1:1 atau 1:M dengan Kunjungan)
+-- 6. Tabel Rekam Medis (Relasi 1:1 dengan Kunjungan)
 CREATE TABLE IF NOT EXISTS rekam_medis (
     id_rekam UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     id_kunjungan UUID REFERENCES kunjungan(id_kunjungan) ON DELETE CASCADE UNIQUE NOT NULL,
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS rekam_medis (
 
 -- 7. Tabel Obat
 CREATE TABLE IF NOT EXISTS obat (
-    id_obat UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id_obat VARCHAR(255) PRIMARY KEY,
     nama_obat VARCHAR(255) UNIQUE NOT NULL,
     harga INT NOT NULL,
     stok INT NOT NULL,
@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS obat (
 
 -- 8. Tabel Tindakan
 CREATE TABLE IF NOT EXISTS tindakan (
-    id_tindakan UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id_tindakan VARCHAR(255) PRIMARY KEY,
     nama_tindakan VARCHAR(255) UNIQUE NOT NULL,
     tarif INT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS tindakan (
 CREATE TABLE IF NOT EXISTS resep_obat (
     id_resep UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     id_rekam UUID REFERENCES rekam_medis(id_rekam) ON DELETE CASCADE NOT NULL,
-    id_obat UUID REFERENCES obat(id_obat) ON DELETE CASCADE NOT NULL,
+    id_obat VARCHAR(255) REFERENCES obat(id_obat) ON DELETE CASCADE NOT NULL,
     jumlah INT NOT NULL,
     aturan_pakai TEXT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS resep_obat (
 CREATE TABLE IF NOT EXISTS tindakan_pasien (
     id_tindakan_pasien UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     id_rekam UUID REFERENCES rekam_medis(id_rekam) ON DELETE CASCADE NOT NULL,
-    id_tindakan UUID REFERENCES tindakan(id_tindakan) ON DELETE CASCADE NOT NULL,
+    id_tindakan VARCHAR(255) REFERENCES tindakan(id_tindakan) ON DELETE CASCADE NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
